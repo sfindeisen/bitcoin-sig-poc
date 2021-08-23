@@ -6,7 +6,7 @@ import bech32
 
 def check_ripemd160():
     # check for RIPEMD-160
-    logging.info("Available hashlib algorithms: {}".format(hashlib.algorithms_available))
+    logging.debug("Available hashlib algorithms: {}".format(hashlib.algorithms_available))
     if "ripemd160" not in hashlib.algorithms_available:
         raise RuntimeError("RIPEMD-160 algorithm is not available in Python standard library (hashlib). Check your OpenSSL version and try again.")
 

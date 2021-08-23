@@ -43,6 +43,7 @@ $ echo "MEQCICN1zKUrGwgiWUyGLT1+cFxzjcALfoGN/buXYIVNg21bAiAC7LFXXn8zJkJCwH5kDiZ5
 
 ECDSA signature format is summarized here:
 
-1. https://bitcoin.stackexchange.com/a/92683
+1. https://bitcoin.stackexchange.com/a/12556
 2. https://bitcoin.stackexchange.com/a/58859
+3. https://bitcoin.stackexchange.com/a/92683
 

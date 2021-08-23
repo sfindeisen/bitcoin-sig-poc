@@ -9,15 +9,35 @@ import sys
 import ecdsa
 
 def verify(data_bytes, sig_bytes):
-    verifying_keys = ecdsa.keys.VerifyingKey.from_public_key_recovery(
+    hashfunc    = hashlib.sha256
+    data_digest = hashfunc(data_bytes).digest()
+
+    logging.info("Message hash: {}".format(data_digest.hex()))
+
+    # recover verifying keys
+    verifying_keys = ecdsa.keys.VerifyingKey.from_public_key_recovery_with_digest(
         sig_bytes,
-        data_bytes,
+        data_digest,
         ecdsa.SECP256k1,
         hashfunc=hashlib.sha256,
         sigdecode=ecdsa.util.sigdecode_der
     )
 
-    logging.info("Recovered verifying keys: {}".format(verifying_keys))
+    logging.debug("Recovered verifying keys: {}".format(verifying_keys))
+
+    # verify the digest using at least 1 key
+    for vk in verifying_keys:
+        ver_digest = vk.verify_digest(
+            sig_bytes,
+            data_digest,
+            sigdecode=ecdsa.util.sigdecode_der
+        )
+
+        logging.debug("verify_digest: {} => {}".format(vk, ver_digest))
+        if ver_digest:
+            return True
+
+    return False
 
 if __name__ == '__main__':
 
@@ -38,5 +58,7 @@ if __name__ == '__main__':
     data_bytes = args.message.encode('utf-8')
     # decode input signature from base64
     sig_bytes = base64.b64decode(args.sig, validate=True)
+
     # verify
-    verify(data_bytes, sig_bytes)
+    verify_result = verify(data_bytes, sig_bytes)
+    print("Signature verification OK!" if verify_result else "Signature verification error.")

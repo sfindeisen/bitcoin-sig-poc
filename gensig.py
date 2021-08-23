@@ -32,9 +32,11 @@ if __name__ == '__main__':
     data_bytes = args.message.encode('utf-8')
 
     # generate the keys
-    sk = ecdsa.SigningKey.generate(curve=ecdsa.NIST384p)
+    sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
     vk = sk.verifying_key
     # generate the signature
-    signature = sk.sign(data_bytes)
-    assert vk.verify(signature, data_bytes)
+    signature = sk.sign_deterministic(data_bytes, sigencode=ecdsa.util.sigencode_der)
+    assert vk.verify(signature, data_bytes, sigdecode=ecdsa.util.sigdecode_der)
+    logging.debug("signature: {}".format(signature))
 
+    print("Signature (DER format, Base64 encoded): {}".format(base64.b64encode(signature)))

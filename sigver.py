@@ -31,10 +31,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Setup logging
-    log_format = '[{asctime}] {levelname:8} {threadName:<14} {message}'
+    log_format = '{levelname:8} {threadName:<14} {message}'
     logging.basicConfig(stream=sys.stderr, level=(logging.DEBUG if args.verbose else logging.INFO), format=log_format, style='{')
-
-    logging.info("hello")
 
     # encode input message as UTF-8 bytes
     data_bytes = args.message.encode('utf-8')

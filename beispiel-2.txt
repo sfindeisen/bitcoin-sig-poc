@@ -1,0 +1,5 @@
+Adresse: bcrt1qgem02qkk5779rdg7gm6cq65pqagg73s6myww46
+Text: this_is_my_test_message
+Signatur: MEQCICN1zKUrGwgiWUyGLT1+cFxzjcALfoGN/buXYIVNg21bAiAC7LFXXn8zJkJCwH5kDiZ5h7wRUL4Eyj1J+oO79DgErQ==
+
+Die Signatur is DER-Encoding in base64.

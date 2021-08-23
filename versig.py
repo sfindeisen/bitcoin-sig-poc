@@ -7,29 +7,8 @@ import logging
 import sys
 
 import ecdsa
-import bech32
 
-def ripemd160(x_bytes):
-    logging.debug("RIPEMD-160: {}".format(x_bytes))
-    hobj = hashlib.new('ripemd160')
-    hobj.update(x_bytes)
-    digest = hobj.digest()
-    logging.debug("RIPEMD-160: {} => {}".format(x_bytes, digest))
-    return digest
-
-def pubkey_to_bech32(public_key):
-    pk_compressed = public_key.to_string(encoding='compressed')
-    logging.debug("pubkey_to_bech32: pk_compressed: {}".format(pk_compressed))
-    pk_hash = ripemd160(hashlib.sha256(pk_compressed).digest())
-    logging.debug("pubkey_to_bech32: pk_hash: {}".format(pk_hash))
-
-    for i in range(0,17):
-        b32 = bech32.encode("bcrt", i, pk_hash)
-        logging.debug("pubkey_to_bech32 LOOP: {}".format(b32))
-
-    b32 = bech32.encode("bcrt", 0, pk_hash)
-    logging.debug("pubkey_to_bech32: {}".format(b32))
-    return b32
+import common
 
 def verify(addr_s, data_bytes, sig_bytes):
     data_digest = hashlib.sha256(data_bytes).digest()
@@ -47,7 +26,7 @@ def verify(addr_s, data_bytes, sig_bytes):
     logging.debug("verify: from_public_key_recovery_with_digest: {}".format(verifying_keys))
 
     for vk in verifying_keys:
-        if addr_s == pubkey_to_bech32(vk):
+        if addr_s == common.pubkey_to_bech32(vk):
             return True
 
 #    # verify the digest using at least 1 key
@@ -67,6 +46,7 @@ def verify(addr_s, data_bytes, sig_bytes):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(
+        description="Given an address, a message and a signature, extracts the public key and verifies the signature.",
         add_help=True, allow_abbrev=False, epilog="""This program comes with ABSOLUTELY NO WARRANTY.""")
 
     parser.add_argument("--verbose", required=False, action="store_true", default=False, help="verbose processing")
@@ -80,10 +60,7 @@ if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr, level=(logging.DEBUG if args.verbose else logging.INFO), format=log_format, style='{')
 
     # check for RIPEMD-160
-    logging.info("Available hashlib algorithms: {}".format(hashlib.algorithms_available))
-    if "ripemd160" not in hashlib.algorithms_available:
-        raise RuntimeError("RIPEMD-160 algorithm is not available in Python standard library (hashlib). Check your OpenSSL version and try again.")
-
+    common.check_ripemd160()
     # encode input message as UTF-8 bytes
     data_bytes = args.message.encode('utf-8')
     # decode input signature from base64

@@ -1,6 +1,14 @@
 # Bitcoin signature verification (proof of concept)
 
-## Example 1
+## How to install
+
+```shell
+$ pip3 install --user -r requirements.txt
+```
+
+## Examples
+
+### Example 1
 
 ```
 Address   : bc1qshk9l4fqzukgmpj2dsp7r33v2768ugm032g847
@@ -22,7 +30,7 @@ $ echo "Hww2Wa22bdvT+zzxrhatUwkDL/lfB7Ta+h5YR+ny2wIsIdzNgkTIkQSbrx0HKJ49PyR2In91
 00000041
 ```
 
-## Example 2
+### Example 2
 
 ```
 Address   : bcrt1qgem02qkk5779rdg7gm6cq65pqagg73s6myww46

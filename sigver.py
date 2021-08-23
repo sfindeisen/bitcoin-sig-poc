@@ -11,7 +11,6 @@ import ecdsa
 def verify(data_bytes, sig_bytes):
     hashfunc    = hashlib.sha256
     data_digest = hashfunc(data_bytes).digest()
-
     logging.info("Message hash: {}".format(data_digest.hex()))
 
     # recover verifying keys

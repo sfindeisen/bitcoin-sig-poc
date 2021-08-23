@@ -26,7 +26,7 @@ def verify(addr_s, data_bytes, sig_bytes):
     logging.debug("verify: from_public_key_recovery_with_digest: {}".format(verifying_keys))
 
     for vk in verifying_keys:
-        if addr_s == common.pubkey_to_bech32(vk):
+        if addr_s == common.pubkey_to_bech32(vk, "bcrt"):
             return True
 
 #    # verify the digest using at least 1 key

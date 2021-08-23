@@ -18,16 +18,16 @@ def ripemd160(x_bytes):
     logging.debug("RIPEMD-160: {} => {}".format(x_bytes, digest))
     return digest
 
-def pubkey_to_bech32(public_key):
+def pubkey_to_bech32(public_key, hrp):
     pk_compressed = public_key.to_string(encoding='compressed')
     logging.debug("pubkey_to_bech32: pk_compressed: {}".format(pk_compressed))
     pk_hash = ripemd160(hashlib.sha256(pk_compressed).digest())
     logging.debug("pubkey_to_bech32: pk_hash: {}".format(pk_hash))
 
     for i in range(0,17):
-        b32 = bech32.encode("bcrt", i, pk_hash)
+        b32 = bech32.encode(hrp, i, pk_hash)
         logging.debug("pubkey_to_bech32 LOOP: {}".format(b32))
 
-    b32 = bech32.encode("bcrt", 0, pk_hash)
+    b32 = bech32.encode(hrp, 0, pk_hash)
     logging.debug("pubkey_to_bech32: {}".format(b32))
     return b32

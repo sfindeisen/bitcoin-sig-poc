@@ -105,7 +105,7 @@ Message   : this_is_my_test_message
 Signature : MEQCICN1zKUrGwgiWUyGLT1+cFxzjcALfoGN/buXYIVNg21bAiAC7LFXXn8zJkJCwH5kDiZ5h7wRUL4Eyj1J+oO79DgErQ==
 ```
 
-This one appears to be a valid ECDSA signature:
+This one appears to be a DER encoded ECDSA signature:
 
 ```shell
 $ echo "MEQCICN1zKUrGwgiWUyGLT1+cFxzjcALfoGN/buXYIVNg21bAiAC7LFXXn8zJkJCwH5kDiZ5h7wRUL4Eyj1J+oO79DgErQ==" | base64 -d | hexdump -C 
@@ -124,7 +124,7 @@ Text     : this_is_my_test_message
 Signatur : MEQCIEUL+7bCTXYZZkEN3kXEBEwwbU3f3Qcdvx3BKrSTA1d2AiBqwGcadqyKAI9UT2OpikPuBPlIvBJN7gi/0oDfBUbNWQ==
 ```
 
-This one appears to be a valid ECDSA signature:
+This one appears to be a DER encoded ECDSA signature:
 
 ```shell
 $ echo "MEQCIEUL+7bCTXYZZkEN3kXEBEwwbU3f3Qcdvx3BKrSTA1d2AiBqwGcadqyKAI9UT2OpikPuBPlIvBJN7gi/0oDfBUbNWQ==" | base64 -d | hexdump -C 

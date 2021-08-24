@@ -17,7 +17,7 @@ if __name__ == '__main__':
         add_help=True, allow_abbrev=False, epilog="""This program comes with ABSOLUTELY NO WARRANTY.""")
 
     parser.add_argument("--verbose",    required=False, action="store_true", default=False, help="verbose processing")
-    parser.add_argument("--bech32-hrp", required=False, choices=["bc", "bcrt"], default="bc", help="Bech32 address type (human-readable prefix)")
+    parser.add_argument("--bech32-hrp", required=False, choices=["bc", "bcrt", "df"], default="bc", help="Bech32 address type (human-readable prefix)")
     parser.add_argument("--message",    required=True,  help="Message to sign (plain ASCII)")
     args = parser.parse_args()
 
@@ -32,16 +32,16 @@ if __name__ == '__main__':
     data_bytes = args.message.encode('utf-8')
 
     # generate the keys
-    sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
-    vk = sk.verifying_key
+    sigkey = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
+    verkey = sigkey.verifying_key
 
     # generate the signature
-    sig = sk.sign_deterministic(data_bytes, sigencode=ecdsa.util.sigencode_der)
-    assert vk.verify(sig, data_bytes, sigdecode=ecdsa.util.sigdecode_der)
+    sig = sigkey.sign_deterministic(data_bytes, sigencode=ecdsa.util.sigencode_der)
+    assert verkey.verify(sig, data_bytes, sigdecode=ecdsa.util.sigdecode_der)
     logging.debug("sig: {}".format(sig))
     sig64 = base64.b64encode(sig).decode()
 
     # output results
-    print("Public key : {}".format(common.pubkey_to_bech32(vk, args.bech32_hrp)))
+    print("Public key : {}".format(common.pubkey_to_bech32(verkey, args.bech32_hrp)))
     print("Message    : {}".format(args.message))
     print("Signature  : {}".format(sig64))

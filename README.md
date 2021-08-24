@@ -1,4 +1,6 @@
-# Bitcoin signature verification (proof of concept)
+# Bitcoin signature generation and verification (proof of concept)
+
+The 2 programs, `gensig` and `versig`, are capable of generating and verifying Bitcoin message signatures.
 
 ## How to install
 
@@ -6,7 +8,66 @@
 $ pip3 install --user -r requirements.txt
 ```
 
-## Examples
+## How to run
+
+### gensig
+
+```
+$ gensig.py --help
+usage: gensig.py [-h] [--verbose] [--bech32-hrp {bc,bcrt,df}] --message
+                 MESSAGE
+
+Given a message, generates a random address and the signature.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --verbose             verbose processing
+  --bech32-hrp {bc,bcrt,df}
+                        Bech32 address type (human-readable prefix)
+  --message MESSAGE     Message to sign (plain ASCII)
+
+This program comes with ABSOLUTELY NO WARRANTY.
+```
+
+### versig
+
+```
+$ versig.py --help
+usage: versig.py [-h] [--verbose] --addr ADDR --message MESSAGE --sig SIG
+
+Given an address, a message and a signature, extracts the public key and
+verifies the signature.
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --verbose          verbose processing
+  --addr ADDR        Bitcoin address
+  --message MESSAGE  Message (plain ASCII)
+  --sig SIG          signature (base64 encoded)
+
+This program comes with ABSOLUTELY NO WARRANTY.
+```
+
+## Example
+
+```
+$ gensig.py --message "hi there!"
+Public key : bc1q7qn5sprxl5xzg2r0aqgvkjwkaf4rtl58yp2adc
+Message    : hi there!
+Signature  : MEUCIH1+j9BPoo3k/YO6bDVSwBJTvAdaQSSExC4+hpksfGxpAiEA37aBoZa8+wi3Ns1dMeyqhi/IgT0Wx7wiIjBX+lvrkos=
+```
+
+```
+$ versig.py --addr "bc1q7qn5sprxl5xzg2r0aqgvkjwkaf4rtl58yp2adc" --message "hi there!" --sig "MEUCIH1+j9BPoo3k/YO6bDVSwBJTvAdaQSSExC4+hpksfGxpAiEA37aBoZa8+wi3Ns1dMeyqhi/IgT0Wx7wiIjBX+lvrkos="
+Signature verification OK!
+```
+
+```
+$ versig.py --addr "bc1q7qn5sprxl5xzg2r0aqgvkjwkaf4rtl58yp2adc" --message "wrong message" --sig "MEUCIH1+j9BPoo3k/YO6bDVSwBJTvAdaQSSExC4+hpksfGxpAiEA37aBoZa8+wi3Ns1dMeyqhi/IgT0Wx7wiIjBX+lvrkos="
+Signature verification error.
+```
+
+## Example files
 
 ### Example 1
 
@@ -30,6 +91,8 @@ $ echo "Hww2Wa22bdvT+zzxrhatUwkDL/lfB7Ta+h5YR+ny2wIsIdzNgkTIkQSbrx0HKJ49PyR2In91
 00000041
 ```
 
+What type of signature is this?
+
 ### Example 2
 
 ```
@@ -49,9 +112,23 @@ $ echo "MEQCICN1zKUrGwgiWUyGLT1+cFxzjcALfoGN/buXYIVNg21bAiAC7LFXXn8zJkJCwH5kDiZ5
 00000040  83 bb f4 38 04 ad                                 |...8..|
 ```
 
-ECDSA signature format is summarized here:
+### Example 3
 
-1. https://bitcoin.stackexchange.com/a/12556
-2. https://bitcoin.stackexchange.com/a/58859
-3. https://bitcoin.stackexchange.com/a/92683
+```
+Adresse  : df1qk87jwkfsg4ayehzmf3rpxq2gytrx8eyqvrsr7m
+Text     : this_is_my_test_message
+Signatur : MEQCIEUL+7bCTXYZZkEN3kXEBEwwbU3f3Qcdvx3BKrSTA1d2AiBqwGcadqyKAI9UT2OpikPuBPlIvBJN7gi/0oDfBUbNWQ==
+```
+
+This one appears to be a valid ECDSA signature:
+
+```shell
+$ echo "MEQCIEUL+7bCTXYZZkEN3kXEBEwwbU3f3Qcdvx3BKrSTA1d2AiBqwGcadqyKAI9UT2OpikPuBPlIvBJN7gi/0oDfBUbNWQ==" | base64 -d | hexdump -C 
+00000000  30 44 02 20 45 0b fb b6  c2 4d 76 19 66 41 0d de  |0D. E....Mv.fA..|
+00000010  45 c4 04 4c 30 6d 4d df  dd 07 1d bf 1d c1 2a b4  |E..L0mM.......*.|
+00000020  93 03 57 76 02 20 6a c0  67 1a 76 ac 8a 00 8f 54  |..Wv. j.g.v....T|
+00000030  4f 63 a9 8a 43 ee 04 f9  48 bc 12 4d ee 08 bf d2  |Oc..C...H..M....|
+00000040  80 df 05 46 cd 59                                 |...F.Y|
+00000046
+```
 

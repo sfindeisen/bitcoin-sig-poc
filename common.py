@@ -4,6 +4,8 @@ import logging
 import ecdsa
 import bech32
 
+BECH32_ADDRESS_TYPES = ["bc", "bcrt", "df"]
+
 def check_ripemd160():
     # check for RIPEMD-160
     logging.debug("Available hashlib algorithms: {}".format(hashlib.algorithms_available))
@@ -24,10 +26,12 @@ def pubkey_to_bech32(public_key, hrp):
     pk_hash = ripemd160(hashlib.sha256(pk_compressed).digest())
     logging.debug("pubkey_to_bech32: pk_hash: {}".format(pk_hash))
 
-    for i in range(0,17):
-        b32 = bech32.encode(hrp, i, pk_hash)
-        logging.debug("pubkey_to_bech32 LOOP: {}".format(b32))
+    # # TODO: remove this
+    # for i in range(0,17):
+    #     b32 = bech32.encode(hrp, i, pk_hash)
+    #     logging.debug("pubkey_to_bech32 LOOP: {}".format(b32))
 
-    b32 = bech32.encode(hrp, 0, pk_hash)
+    witness_version = 0
+    b32 = bech32.encode(hrp, witness_version, pk_hash)
     logging.debug("pubkey_to_bech32: {}".format(b32))
     return b32

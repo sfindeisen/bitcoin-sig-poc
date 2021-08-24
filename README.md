@@ -14,7 +14,7 @@ $ pip3 install --user -r requirements.txt
 
 The signature generator
 
-```
+```shell
 $ gensig.py --help
 usage: gensig.py [-h] [--verbose] [--bech32-hrp {bc,bcrt,df}] --message
                  MESSAGE
@@ -35,7 +35,7 @@ This program comes with ABSOLUTELY NO WARRANTY.
 
 The signature verifier
 
-```
+```shell
 $ versig.py --help
 usage: versig.py [-h] [--verbose] --addr ADDR --message MESSAGE --sig SIG
 
@@ -54,19 +54,19 @@ This program comes with ABSOLUTELY NO WARRANTY.
 
 ## Example
 
-```
+```shell
 $ gensig.py --message "hi there!"
 Public key : bc1q7qn5sprxl5xzg2r0aqgvkjwkaf4rtl58yp2adc
 Message    : hi there!
 Signature  : MEUCIH1+j9BPoo3k/YO6bDVSwBJTvAdaQSSExC4+hpksfGxpAiEA37aBoZa8+wi3Ns1dMeyqhi/IgT0Wx7wiIjBX+lvrkos=
 ```
 
-```
+```shell
 $ versig.py --addr "bc1q7qn5sprxl5xzg2r0aqgvkjwkaf4rtl58yp2adc" --message "hi there!" --sig "MEUCIH1+j9BPoo3k/YO6bDVSwBJTvAdaQSSExC4+hpksfGxpAiEA37aBoZa8+wi3Ns1dMeyqhi/IgT0Wx7wiIjBX+lvrkos="
 Signature verification OK!
 ```
 
-```
+```shell
 $ versig.py --addr "bc1q7qn5sprxl5xzg2r0aqgvkjwkaf4rtl58yp2adc" --message "wrong message" --sig "MEUCIH1+j9BPoo3k/YO6bDVSwBJTvAdaQSSExC4+hpksfGxpAiEA37aBoZa8+wi3Ns1dMeyqhi/IgT0Wx7wiIjBX+lvrkos="
 Signature verification error.
 ```

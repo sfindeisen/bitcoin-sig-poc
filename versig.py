@@ -10,7 +10,8 @@ import ecdsa
 
 import common
 
-def verify(addr_s, data_bytes, sig_bytes):
+def verify(bech32_addr_s, data_bytes, sig_bytes):
+    """Recovers the public key(s) from the signature and matches them against the given Bech32 address."""
     data_digest = hashlib.sha256(data_bytes).digest()
     logging.debug("verify: data_digest: {}".format(data_digest))
 
@@ -25,21 +26,21 @@ def verify(addr_s, data_bytes, sig_bytes):
 
     logging.debug("verify: from_public_key_recovery_with_digest: {}".format(verifying_keys))
 
-    for vk in verifying_keys:
-        if addr_s == common.pubkey_to_bech32(vk, "bc"):
-            return True
+    # We could now verify the digest with any of the keys, like this:
+    #
+    #     ver_digest = ver_key.verify_digest(
+    #       sig_bytes,
+    #       data_digest,
+    #       sigdecode=ecdsa.util.sigdecode_der
+    #     )
+    #
+    # This is not necessary because it always works (with each key).
 
-#    # verify the digest using at least 1 key
-#    for vk in verifying_keys:
-#        ver_digest = vk.verify_digest(
-#            sig_bytes,
-#            data_digest,
-#            sigdecode=ecdsa.util.sigdecode_der
-#        )
-#
-#        logging.debug("verify_digest: {} => {}".format(vk, ver_digest))
-#        if ver_digest:
-#            return True
+    # Let's check if any of the keys matches the input address
+    for vk in verifying_keys:
+        for at in common.BECH32_ADDRESS_TYPES:
+            if bech32_addr_s == common.pubkey_to_bech32(vk, at):
+                return True
 
     return False
 

@@ -17,7 +17,7 @@ if __name__ == '__main__':
         add_help=True, allow_abbrev=False, epilog="""This program comes with ABSOLUTELY NO WARRANTY.""")
 
     parser.add_argument("--verbose",    required=False, action="store_true", default=False, help="verbose processing")
-    parser.add_argument("--bech32-hrp", required=False, choices=["bc", "bcrt", "df"], default="bc", help="Bech32 address type (human-readable prefix)")
+    parser.add_argument("--bech32-hrp", required=False, choices=common.BECH32_ADDRESS_TYPES, default=common.BECH32_ADDRESS_TYPES[0], help="Bech32 address type (human-readable prefix)")
     parser.add_argument("--message",    required=True,  help="Message to sign (plain ASCII)")
     args = parser.parse_args()
 

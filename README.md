@@ -12,6 +12,8 @@ $ pip3 install --user -r requirements.txt
 
 ### gensig
 
+The signature generator
+
 ```
 $ gensig.py --help
 usage: gensig.py [-h] [--verbose] [--bech32-hrp {bc,bcrt,df}] --message
@@ -30,6 +32,8 @@ This program comes with ABSOLUTELY NO WARRANTY.
 ```
 
 ### versig
+
+The signature verifier
 
 ```
 $ versig.py --help

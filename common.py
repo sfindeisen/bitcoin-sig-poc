@@ -8,6 +8,12 @@ import bech32
 # The first one is the default one.
 BECH32_ADDRESS_TYPES = ["bc", "bcrt", "df"]
 
+def make_bitcoin_message(msg_s):
+    # TODO: message must not be too long!
+    data_bytes = ("\x18Bitcoin Signed Message:\n" + chr(len(msg_s)) + msg_s).encode('utf-8')
+    logging.debug("make_bitcoin_message: {} => {}".format(msg_s, data_bytes))
+    return data_bytes
+
 def check_ripemd160():
     """Checks if RIPEMD-160 cipher is available from the local OpenSSL implementation."""
     logging.debug("Available hashlib algorithms: {}".format(hashlib.algorithms_available))

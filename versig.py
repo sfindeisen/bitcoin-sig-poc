@@ -63,8 +63,8 @@ if __name__ == '__main__':
 
     # check for RIPEMD-160
     common.check_ripemd160()
-    # encode input message as UTF-8 bytes
-    data_bytes = args.message.encode('utf-8')
+    # encode input message as bytes
+    data_bytes = common.make_bitcoin_message(args.message)
     # decode input signature from base64
     sig_bytes = base64.b64decode(args.sig, validate=True)
     logging.debug("sig_bytes: {}".format(sig_bytes))

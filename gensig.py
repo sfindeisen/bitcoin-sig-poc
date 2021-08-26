@@ -28,8 +28,8 @@ if __name__ == '__main__':
     # check for RIPEMD-160
     common.check_ripemd160()
 
-    # encode input message as UTF-8 bytes
-    data_bytes = args.message.encode('utf-8')
+    # encode input message as bytes
+    data_bytes = common.make_bitcoin_message(args.message)
 
     # generate the keys
     sigkey = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)

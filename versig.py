@@ -24,7 +24,7 @@ def verify(bech32_addr_s, data_bytes, sig_bytes):
         sigdecode=ecdsa.util.sigdecode_der
     )
 
-    logging.debug("verify: from_public_key_recovery_with_digest: {}".format(verifying_keys))
+    # logging.debug("verify: from_public_key_recovery_with_digest: {}".format(verifying_keys))
 
     # We could now verify the digest with any of the keys, like this:
     #

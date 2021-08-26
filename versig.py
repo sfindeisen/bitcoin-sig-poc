@@ -66,12 +66,14 @@ if __name__ == '__main__':
 
     # check for RIPEMD-160
     common.check_ripemd160()
-    # encode input message as bytes
-    data_bytes = common.make_bitcoin_message(args.message)
+
+    # compute input message hash
+    data_hash = common.make_bitcoin_message_hash(args.message)
+
     # decode input signature from base64
     sig_bytes = base64.b64decode(args.sig, validate=True)
     logging.debug("signature: {}".format(sig_bytes.hex()))
 
     # verify
-    verify_result = verify(args.addr, data_bytes, sig_bytes)
+    verify_result = verify(args.addr, data_hash, sig_bytes)
     print("Signature verification OK!" if verify_result else "Signature verification error.")

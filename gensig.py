@@ -28,16 +28,16 @@ if __name__ == '__main__':
     # check for RIPEMD-160
     common.check_ripemd160()
 
-    # encode input message as bytes
-    data_bytes = common.make_bitcoin_message(args.message)
+    # compute input message hash
+    data_hash = common.make_bitcoin_message_hash(args.message)
 
     # generate the keys
     sigkey = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1, hashfunc=hashlib.sha256)
     verkey = sigkey.verifying_key
 
     # generate the signature
-    sig = sigkey.sign_deterministic(data_bytes, sigencode=ecdsa.util.sigencode_der)
-    assert verkey.verify(sig, data_bytes, sigdecode=ecdsa.util.sigdecode_der)
+    sig = sigkey.sign_deterministic(data_hash, sigencode=ecdsa.util.sigencode_der)
+    assert verkey.verify(sig, data_hash, sigdecode=ecdsa.util.sigdecode_der)
     logging.debug("signature: {}".format(sig))
     sig64 = base64.b64encode(sig).decode()
 

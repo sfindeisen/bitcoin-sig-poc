@@ -70,7 +70,7 @@ if __name__ == '__main__':
     data_bytes = common.make_bitcoin_message(args.message)
     # decode input signature from base64
     sig_bytes = base64.b64decode(args.sig, validate=True)
-    logging.debug("sig_bytes: {}".format(sig_bytes.hex()))
+    logging.debug("signature: {}".format(sig_bytes.hex()))
 
     # verify
     verify_result = verify(args.addr, data_bytes, sig_bytes)

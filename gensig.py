@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # generate the signature
     sig = sigkey.sign_deterministic(data_bytes, sigencode=ecdsa.util.sigencode_der)
     assert verkey.verify(sig, data_bytes, sigdecode=ecdsa.util.sigdecode_der)
-    logging.debug("sig: {}".format(sig))
+    logging.debug("signature: {}".format(sig))
     sig64 = base64.b64encode(sig).decode()
 
     # output results

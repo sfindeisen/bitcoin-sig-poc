@@ -37,11 +37,11 @@ def verify(bech32_addr_s, data_bytes, sig_bytes):
     # This is not necessary because it always works (with each key).
 
     # Let's check if any of the keys matches the input address.
-    # TODO: it would probably be faster to parse the input address type and just use that one.
-    for vk in verifying_keys:
-        for at in common.BECH32_ADDRESS_TYPES:
-            if bech32_addr_s == common.pubkey_to_bech32(vk, at):
-                return True
+    for at in common.BECH32_ADDRESS_TYPES:
+        if bech32_addr_s.startswith(at):
+            for vk in verifying_keys:
+                if bech32_addr_s == common.pubkey_to_bech32(vk, at):
+                    return True
 
     return False
 

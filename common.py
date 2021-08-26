@@ -28,6 +28,12 @@ def ripemd160(x_bytes):
     logging.debug("RIPEMD-160: {} => {}".format(x_bytes.hex(), digest.hex()))
     return digest
 
+def validate_bech32(bech32_addr_s):
+    for hrp in BECH32_ADDRESS_TYPES:
+        if bech32_addr_s.startswith(hrp):
+            return True
+    return False
+
 def pubkey_to_bech32(public_key, hrp):
     """Converts given public key to Bech32."""
     pk_compressed = public_key.to_string(encoding='compressed')

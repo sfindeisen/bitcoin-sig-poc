@@ -61,6 +61,9 @@ if __name__ == '__main__':
     log_format = '{levelname:8} {threadName:<14} {message}'
     logging.basicConfig(stream=sys.stderr, level=(logging.DEBUG if args.verbose else logging.INFO), format=log_format, style='{')
 
+    if not common.validate_bech32(args.addr):
+        raise RuntimeError("Invalid Bech32 address format! Must start with: {}".format(common.BECH32_ADDRESS_TYPES))
+
     # check for RIPEMD-160
     common.check_ripemd160()
     # encode input message as bytes

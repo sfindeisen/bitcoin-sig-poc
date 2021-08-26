@@ -13,7 +13,7 @@ import common
 def verify(bech32_addr_s, data_bytes, sig_bytes):
     """Recovers the public key(s) from the signature and matches them against the given Bech32 address."""
     data_digest = hashlib.sha256(data_bytes).digest()
-    logging.debug("verify: data_digest: {}".format(data_digest))
+    logging.debug("verify: data_digest: {}".format(data_digest.hex()))
 
     # recover verifying keys
     verifying_keys = ecdsa.keys.VerifyingKey.from_public_key_recovery_with_digest(
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     data_bytes = common.make_bitcoin_message(args.message)
     # decode input signature from base64
     sig_bytes = base64.b64decode(args.sig, validate=True)
-    logging.debug("sig_bytes: {}".format(sig_bytes))
+    logging.debug("sig_bytes: {}".format(sig_bytes.hex()))
 
     # verify
     verify_result = verify(args.addr, data_bytes, sig_bytes)

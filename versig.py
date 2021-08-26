@@ -16,7 +16,7 @@ def verify(bech32_addr_s, data_bytes, sig_bytes):
     logging.debug("verify: data_digest: {}".format(data_digest.hex()))
 
     # recover verifying keys
-    verifying_keys = ecdsa.keys.VerifyingKey.from_public_key_recovery_with_digest(
+    verifying_keys = ecdsa.VerifyingKey.from_public_key_recovery_with_digest(
         sig_bytes,
         data_digest,
         ecdsa.SECP256k1,
